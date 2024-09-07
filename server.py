@@ -105,8 +105,9 @@ def register():
 def home():
     # Check if the user is logged in
     if 'loggedin' in session:
+        user = session['username'].capitalize()
         # User is loggedin show them the home page
-        return render_template('home.html', username=session['username'])
+        return render_template('home.html', msg='Welcome back ' + user)
     # User is not loggedin redirect to login page
     return redirect(url_for('login'))
 
@@ -122,6 +123,38 @@ def profile():
         # Show the profile page with account info
         return render_template('profile.html', account=account)
     # User is not logged in redirect to login page
+    return redirect(url_for('login'))
+
+# http://localhost:8000/rcialogin/enroll - this will be the home page, only accessible for logged in users
+@app.route('/rcialogin/enroll', methods=['GET', 'POST'])
+def enroll():
+    # Save user name and Id from session values
+    user = session['username'].capitalize()
+    userid = session['id']
+    # Output message if something goes wrong...
+    msg = user + '! please fill in the RCIA enrollment form, and click enroll.'
+    # Check if the user is logged in
+    if 'loggedin' in session:
+        if request.method == 'GET':
+            # User is loggedin show them the home page
+            return render_template('enroll.html', msg=msg)
+        if request.method == 'POST':
+            # Create variables for easy access
+            firstname = request.form['firstname']
+            lastname = request.form['lastname']
+            birthdate = request.form['birthdate']
+            maritalstatus = request.form['maritalstatus']
+            mothername = request.form['mothername']
+            motherreligion = request.form['motherreligion']
+            fathername = request.form['fathername']
+            fatherreligion = request.form['fatherreligion']
+            religiousbg = request.form['religiousbg']
+            cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+            # Insert new RCIA enrollment into the enroll table
+            cursor.execute('INSERT INTO enroll VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)', (userid, firstname, lastname, birthdate, maritalstatus, mothername, motherreligion, fathername, fatherreligion, religiousbg))
+            mysql.connection.commit()
+            return render_template('home.html', msg='Congratulations! you have successfully enrolled!')
+    # User is not loggedin redirect to login page
     return redirect(url_for('login'))
 
 if __name__ == '__main__':

@@ -1,0 +1,44 @@
+{% extends 'layout.html' %}
+
+{% block title %}Enroll{% endblock %}
+
+{% block content %}
+    <h2>Enrollment Form</h2>
+    <div class="enroll">
+        <form action="{{ url_for('enroll') }}" method="post" autocomplete="off">
+          <div class="msg">{{ msg }}</div>
+          <label for="fname">First Name</label>
+          <input type="text" id="fname" name="firstname" placeholder="Your name.." required>
+      
+          <label for="lname">Last Name</label>
+          <input type="text" id="lname" name="lastname" placeholder="Your last name.." required>
+      
+          <label for="dob">Date of Birth</label>
+          <input type="date" id="dob" name="birthdate" required>
+          
+          <label for="mstatus">Marital Status</label>
+          <select id="mstatus" name="maritalstatus" required>
+            <option value="married">Married</option>
+            <option value="divorced">Divorced</option>
+            <option value="single">Single</option>
+            <option value="separated">Separated</option>
+          </select>
+      
+          <label for="mname">Mothers Maiden Name</label>
+          <input type="text" id="mname" name="mothername" placeholder="Your mothers name.." required>
+          
+          <label for="mrel">Mothers Religion</label>
+          <input type="text" id="mrel" name="motherreligion" placeholder="Mothers religion.." required>
+      
+          <label for="fname">Fathers Name</label>
+          <input type="text" id="fname" name="fathername" placeholder="Your fathers name.." required>
+          
+          <label for="frel">Mothers Religion</label>
+          <input type="text" id="frel" name="fatherreligion" placeholder="Fathers religion.." required>
+          
+          <label for="background">Religious Background</label>
+          <textarea id="background" name="religiousbg" required placeholder="Please write a few sentences explaining how you came about RCIA..."></textarea>
+          <input type="submit" value="Enroll">
+        </form>
+      </div>
+{% endblock %}
